@@ -7,7 +7,7 @@ WORKDIR /opt/openairinterface5g/cmake_targets
 # install deps
 RUN apt update -y \
     && apt install -y libforms-dev libforms-bin tmux apt-utils cmake make ninja-build meson libuhd-dev uhd-host \
-    && ./build_oai -I \
+    && ./build_oai -I
 
 # build OAI UE, gNB, and eNB
 RUN ./build_oai -w USRP --noavx512 --ninja --eNB --nrUE --gNB --build-lib "nrscope" --cmake-opt "-DCMAKE_C_FLAGS='-mavx2 -mpclmul -msse4.2' -DCMAKE_CXX_FLAGS='-mavx2 -mpclmul -msse4.2'" -C
