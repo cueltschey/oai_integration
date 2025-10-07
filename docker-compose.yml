@@ -34,9 +34,7 @@ services:
     build:
       context: .
     command: /opt/openairinterface5g/cmake_targets/ran_build/build/nr-softmodem -O /gnb_config.conf --gNBs.[0].min_rxtxtime 6 -E --continuous-tx --RUs.[0].sdr_addrs serial=32C751C
-    networks:
-      ran:
-        ipv4_address: ${GNB_IP:-10.53.1.3}
+    network_mode: host
     configs:
       - gnb_config.conf
     depends_on:
@@ -45,12 +43,13 @@ services:
   oai_ue:
     container_name: oai_ue
     privileged: true
+    network_mode: host
     volumes:
       - /usr/share/uhd/images:/usr/share/uhd/images
       - /dev/bus/usb:/dev/bus/usb
     build:
       context: .
-    command: /opt/openairinterface5g/cmake_targets/ran_build/build/nr-uesoftmodem -r 51 --numerology 1 --band 78 -C 3309480000 --ssb 238 --ue-fo-compensation -E --uicc0.imsi 001010000000001 --uicc0.key fec86ba6eb707ed08905757b1bb44b8f --uicc0.opc C42449363BBAD02B66D16BC975D77CC1 --uicc0.dnn internet --uicc0.nssai_sst 1
+    command: /opt/openairinterface5g/cmake_targets/ran_build/build/nr-uesoftmodem -r 106 --numerology 1 --band 78 -C 3619200000 --ssb 516 --ue-fo-compensation -E --uicc0.imsi 001010000000001 --uicc0.key fec86ba6eb707ed08905757b1bb44b8f --uicc0.opc C42449363BBAD02B66D16BC975D77CC1 --uicc0.dnn internet --uicc0.nssai_sst 1 --rfsim
 
 networks:
   ran:
@@ -61,4 +60,4 @@ networks:
 
 configs:
   gnb_config.conf:
-    file: ${GNB_CONFIG_PATH:-./gnb.sa.band78.fr1.106PRB.usrpb210.conf} # Path to your desired config file
+    file: ${GNB_CONFIG_FILE:-./gnb.sa.band78.fr1.24PRB.usrpb210.conf} # Path to your desired config file
