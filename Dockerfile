@@ -1,6 +1,12 @@
 FROM ubuntu:24.04
 
-COPY openairinterface5g /opt/openairinterface5g
+#COPY openairinterface5g /opt/openairinterface5g
+RUN apt-get update && \
+    apt-get install -y git && \
+    rm -rf /var/lib/apt/lists/*
+
+
+RUN git clone https://gitlab.eurecom.fr/oai/openairinterface5g.git /opt/openairinterface5g
 
 WORKDIR /opt/openairinterface5g/cmake_targets
 
