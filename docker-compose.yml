@@ -29,11 +29,11 @@ services:
     container_name: oai_gnb
     privileged: true
     volumes:
-      - /usr/share/uhd/images:/usr/share/uhd/images
+      - ./images:/usr/share/uhd/images
       - /dev/bus/usb:/dev/bus/usb
     build:
       context: .
-    command: /opt/openairinterface5g/cmake_targets/ran_build/build/nr-softmodem -O /gnb_config.conf --gNBs.[0].min_rxtxtime 6 -E --continuous-tx --RUs.[0].sdr_addrs serial=32C751C
+    command: /opt/openairinterface5g/cmake_targets/ran_build/build/nr-softmodem -O /gnb_config.conf --gNBs.[0].min_rxtxtime 6 -E --continuous-tx --RUs.[0].sdr_addrs vusrp_force_type=b200
     network_mode: host
     configs:
       - gnb_config.conf
@@ -60,4 +60,4 @@ networks:
 
 configs:
   gnb_config.conf:
-    file: ${GNB_CONFIG_FILE:-./gnb.sa.band78.fr1.24PRB.usrpb210.conf} # Path to your desired config file
+    file: ${GNB_CONFIG_FILE:-./gnb.sa.band78.fr1.106PRB.usrpb210.conf} # Path to your desired config file
