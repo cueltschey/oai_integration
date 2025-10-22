@@ -18,6 +18,15 @@ RUN apt update -y \
 # build OAI UE, gNB, and eNB
 RUN ./build_oai -w USRP --noavx512 --ninja --eNB --nrUE --gNB --build-lib "nrscope" --cmake-opt "-DCMAKE_C_FLAGS='-mavx2 -mpclmul -msse4.2' -DCMAKE_CXX_FLAGS='-mavx2 -mpclmul -msse4.2'" -C
 
+WORKDIR /opt/openairinterface5g
+
+# Create an entrypoint script to execute the command from ARGS environment variable
+RUN echo '#!/bin/bash\nif [ -n "$ARGS" ]; then\n  exec bash -c "$ARGS"\nelse\n  exec "$@"\nfi' > /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]
+
 # RUN cd /opt \
 #     && git clone https://github.com/open5gs/open5gs.git \
 #     && cd open5gs \
